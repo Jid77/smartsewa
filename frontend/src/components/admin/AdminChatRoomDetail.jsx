@@ -40,22 +40,22 @@ function AdminChatRoomDetail({ roomId, onBack }) {
 
     channelRef.current = channel;
   };
+  
+  const fetchMessages = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/rooms/${roomId}/messages`, {
+        withCredentials: true,
+      });
+      setMessages(res.data);
+      initializePusher();
+    } catch (err) {
+      console.error('Gagal load chat:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/rooms/${roomId}/messages`, {
-          withCredentials: true,
-        });
-        setMessages(res.data);
-        initializePusher();
-      } catch (err) {
-        console.error('Gagal load chat:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     const fetchUsername = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/rooms`, {

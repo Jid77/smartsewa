@@ -41,28 +41,29 @@ function UserChatContent({ onBack }) {
     channelRef.current = channel;
   };
 
+  
+  const fetchRoomAndMessages = async () => {
+    try {
+      const roomRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/my-room`, {
+        withCredentials: true,
+      });
+      const roomId = roomRes.data.roomId;
+      setRoomId(roomId);
+
+      const msgRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/rooms/${roomId}/messages`, {
+        withCredentials: true,
+      });
+      setMessages(msgRes.data);
+
+      initializePusher(roomId);
+    } catch (err) {
+      console.error('Gagal load chat:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchRoomAndMessages = async () => {
-      try {
-        const roomRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/my-room`, {
-          withCredentials: true,
-        });
-        const roomId = roomRes.data.roomId;
-        setRoomId(roomId);
-
-        const msgRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/rooms/${roomId}/messages`, {
-          withCredentials: true,
-        });
-        setMessages(msgRes.data);
-
-        initializePusher(roomId);
-      } catch (err) {
-        console.error('Gagal load chat:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchRoomAndMessages();
 
     return () => {
@@ -96,7 +97,11 @@ function UserChatContent({ onBack }) {
         { roomId, message: messageToSend },
         { withCredentials: true }
       );
-      fetchMessages()
+      
+      const msgRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/rooms/${roomId}/messages`, {
+        withCredentials: true,
+      });
+      setMessages(msgRes.data);
     } catch (err) {
       console.error('Gagal kirim pesan:', err);
     }
