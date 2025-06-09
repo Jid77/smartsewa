@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 const cron = require('node-cron');
 const dayjs = require('dayjs');
 const { sendEmail } = require('../utils/emailService');
-
+const jwt = require('../utils/jwt');
 
 const saveHistory = async (activity, userId = null, laporanId = null) => {
   try {
@@ -107,7 +107,14 @@ exports.getUserById = async (req, res) => {
       attributes: ['id', 'username', 'email', 'role', 'no_room', 'active_until', 'createdAt'],
     });
 
-    if (!user) return res.status(404).json({ error: 'User tidak ditemukan' });
+    if (!user) {      
+      res.clearCookie('token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // sesuaikan dengan saat login
+      });
+
+      return res.status(404).json({ error: 'User tidak ditemukan' })
+    };
 
     res.json(user);
   } catch (err) {
@@ -161,15 +168,16 @@ exports.getUsersWithRoom = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    console.log('Session:', req.session.user);  // 🔍 Debug session
+    // console.log('Session:', req.session.user);  // 🔍 Debug session
     console.log('Body:', req.body);             // 🔍 Debug body dari frontend
 
-    if (!req.session.user) {
+    const currentUser = jwt.verify(req.cookies?.token);
+    if (!currentUser) {
       return res.status(401).json({ error: 'Tidak ada sesi pengguna' });
     }
 
     const { username, email } = req.body;
-    const userId = req.session.user.id;
+    const userId = currentUser?.id;
 
     const user = await db.User.findByPk(userId);
     if (!user) {
@@ -193,15 +201,31 @@ exports.updateProfile = async (req, res) => {
     user.email = email;
     await user.save();
 
+    const token = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      no_room: user.no_room,
+      createdAt: user.createdAt
+    }
+
     // Update juga session user
-    req.session.user.username = username;
-    req.session.user.email = email;
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // ubah ke true di production (pakai HTTPS)
+      maxAge: 24 * 60 * 60 * 1000, // 1 hari
+    });
 
     // Kirim data baru ke frontend, termasuk createdAt agar tidak hilang
     res.json({
       message: 'Profil berhasil diperbarui',
       user: {
-        ...req.session.user,
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        no_room: user.no_room,
         createdAt: user.createdAt
       }
     });

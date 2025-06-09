@@ -1,5 +1,6 @@
 const db = require('../models');
 const pusher = require('../config/pusher');
+const jwt = require('../utils/jwt');
 
 // Kirim pesan
 exports.sendMessage = async (req, res) => {
@@ -7,7 +8,7 @@ exports.sendMessage = async (req, res) => {
     const { roomId, message } = req.body;
 
     // Ambil user dari session
-    const currentUser = req.session.user;
+    const currentUser = jwt.verify(req.cookies?.token);
     if (!currentUser) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -37,7 +38,8 @@ exports.sendMessage = async (req, res) => {
 // Ambil semua room + info user (khusus admin)
 exports.getAllChatRooms = async (req, res) => {
   try {
-    const currentUser = req.session.user;
+    const currentUser = jwt.verify(req.cookies?.token);
+    
     if (!currentUser || currentUser.role !== 'admin') {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -61,7 +63,7 @@ exports.getAllChatRooms = async (req, res) => {
 // Ambil atau buat room milik user
 exports.getMyRoom = async (req, res) => {
   try {
-    const currentUser = req.session.user;
+    const currentUser = jwt.verify(req.cookies?.token);
     if (!currentUser || currentUser.role !== 'user') {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -83,7 +85,7 @@ exports.getMyRoom = async (req, res) => {
 exports.getMessagesByRoomId = async (req, res) => {
   try {
     const { roomId } = req.params;
-    const currentUser = req.session.user;
+    const currentUser = jwt.verify(req.cookies?.token);
 
     if (!currentUser) {
       return res.status(401).json({ error: 'Unauthorized' });

@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const { Op } = require('sequelize');
 const db = require('../models');
 const { sendEmail } = require('../utils/emailService');
+const jwt = require('../utils/jwt');
 require('dotenv').config();
 
 exports.register = async (req, res) => {
@@ -85,9 +86,20 @@ exports.login = async (req, res) => {
       return res.status(400).json({ error: 'Kredensial tidak valid' });
     }
 
-    req.session.user = {
-      id: user.id, username: user.username, email: user.email, role: user.role
-    };
+    const token = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      no_room: user.no_room,
+      createdAt: user.createdAt
+    }
+
+    res.cookie('token', jwt.create(token), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // ubah ke true di production (pakai HTTPS)
+      maxAge: 24 * 60 * 60 * 1000, // 1 hari
+    });
 
     res.json({
       id: user.id, username: user.username,
@@ -101,10 +113,12 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  req.session.destroy(err => {
-    if (err) return res.status(500).json({ error: 'Logout gagal' });
-    res.json({ message: 'Logout berhasil' });
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // sesuaikan dengan saat login
   });
+
+  res.json({ message: 'Logout berhasil' });
 };
 
 exports.forgotPassword = async (req, res) => {

@@ -4,6 +4,8 @@ const session = require('express-session');
 const db = require('./models'); 
 const app = express();
 const path = require('path');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -16,8 +18,12 @@ const createDefaultAdmin = require('./utils/createDefaultAdmin');
 
 require('dotenv').config();
 
+app.use(bodyParser.json());
+app.use(cookieParser());
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173'],
+  // origin: ['http://localhost:3000', 'http://localhost:5173'],
+  origin: true,
   credentials: true
 }));
 

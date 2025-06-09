@@ -77,6 +77,12 @@ function UserHomeContent({ onOpenChat}) {
         setUserData(res.data); // <== UPDATE STATE
       } catch (err) {
         console.error('Gagal memperbarui data user:', err);
+        if(err?.response?.data?.error === 'User tidak ditemukan'){
+          await axios.post(`${import.meta.env.VITE_API_URL}/api/logout`, {}, { withCredentials: true });
+          localStorage.removeItem('user');
+          navigate('/');
+          return;
+        }
       }
     };
 
