@@ -38,11 +38,11 @@ exports.sendMessage = async (req, res) => {
 // Ambil semua room + info user (khusus admin)
 exports.getAllChatRooms = async (req, res) => {
   try {
-    const currentUser = jwt.verify(req.cookies?.token);
+    // const currentUser = jwt.verify(req.cookies?.token);
     
-    if (!currentUser || currentUser.role !== 'admin') {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+    // if (!currentUser || currentUser.role !== 'admin') {
+    //   return res.status(401).json({ error: 'Unauthorized' });
+    // }
 
     const rooms = await db.ChatRoom.findAll({
       include: {
