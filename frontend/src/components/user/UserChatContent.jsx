@@ -96,6 +96,7 @@ function UserChatContent({ onBack }) {
         { roomId, message: messageToSend },
         { withCredentials: true }
       );
+      fetchMessages()
     } catch (err) {
       console.error('Gagal kirim pesan:', err);
     }
