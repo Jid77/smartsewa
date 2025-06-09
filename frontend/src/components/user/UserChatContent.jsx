@@ -98,10 +98,7 @@ function UserChatContent({ onBack }) {
         { withCredentials: true }
       );
       
-      const msgRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/rooms/${roomId}/messages`, {
-        withCredentials: true,
-      });
-      setMessages(msgRes.data);
+      initializePusher(roomId);
     } catch (err) {
       console.error('Gagal kirim pesan:', err);
     }
