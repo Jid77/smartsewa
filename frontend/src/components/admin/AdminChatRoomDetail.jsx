@@ -104,8 +104,6 @@ function AdminChatRoomDetail({ roomId, onBack }) {
         { roomId, message: messageToSend },
         { withCredentials: true }
       );
-      
-      initializePusher()
     } catch (err) {
       console.error('Gagal kirim pesan:', err);
     }

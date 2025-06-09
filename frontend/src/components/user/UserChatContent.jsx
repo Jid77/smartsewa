@@ -97,8 +97,6 @@ function UserChatContent({ onBack }) {
         { roomId, message: messageToSend },
         { withCredentials: true }
       );
-      
-      initializePusher(roomId);
     } catch (err) {
       console.error('Gagal kirim pesan:', err);
     }
