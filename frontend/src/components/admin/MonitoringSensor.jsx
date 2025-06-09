@@ -21,7 +21,7 @@ export default function MonitoringSensor({ onBack }) {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/users/with-room');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/with-room`);
         if (res.data.length > 0) {
           setUserList(res.data);
           setSelectedUser(res.data[0]);
@@ -38,7 +38,7 @@ export default function MonitoringSensor({ onBack }) {
     const fetchMonitoring = async () => {
       if (!selectedUser?.no_room) return;
       try {
-        const res = await axios.get(`http://localhost:5000/api/monitoring?kamar=${selectedUser.no_room}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/monitoring?kamar=${selectedUser.no_room}`);
         const formatted = res.data.sensor.map(item => ({
           time: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           suhu: item.suhu,

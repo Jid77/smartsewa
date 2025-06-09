@@ -44,13 +44,13 @@ function UserChatContent({ onBack }) {
   useEffect(() => {
     const fetchRoomAndMessages = async () => {
       try {
-        const roomRes = await axios.get('http://localhost:5000/api/chat/my-room', {
+        const roomRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/my-room`, {
           withCredentials: true,
         });
         const roomId = roomRes.data.roomId;
         setRoomId(roomId);
 
-        const msgRes = await axios.get(`http://localhost:5000/api/chat/rooms/${roomId}/messages`, {
+        const msgRes = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/rooms/${roomId}/messages`, {
           withCredentials: true,
         });
         setMessages(msgRes.data);
@@ -92,7 +92,7 @@ function UserChatContent({ onBack }) {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/chat/message',
+        `${import.meta.env.VITE_API_URL}/api/chat/message`,
         { roomId, message: messageToSend },
         { withCredentials: true }
       );
