@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
 const db = require('./models'); 
 const app = express();
 const path = require('path');
@@ -28,17 +27,6 @@ app.use(cors({
 }));
 
 app.use(express.json());
-
-app.use(session({
-  secret: 'smartsewa-secret', 
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: false, 
-    maxAge: 24 * 60 * 60 * 1000, // 1 hari
-  },
-}));
 
 // route
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
