@@ -30,7 +30,7 @@ const checkPowerAccessEmails = async () => {
       let message = '';
       let activity = '';
 
-      if (diff >= 7 && diff <= 8) {
+      if (diff >=29 && diff <= 30) {
         subject = '⏳ Akses Listrik Akan Habis dalam 7 Hari';
         message = `Halo ${user.username},<br>Akses listrik kamar Anda akan habis dalam <b>7 hari</b> (${deadline.format('DD MMM YYYY')}).`;
         activity = `Akses listrik akan habis dalam 7 hari (target: ${deadline.format('YYYY-MM-DD')})`;
@@ -79,14 +79,14 @@ const checkPowerAccessEmails = async () => {
 };
 
 // Jadwal tes 1menit sekali
-// cron.schedule('*/1 * * * *', () => {
-//   console.log('⏰ Menjalankan pengecekan akses listrik...');
-//   checkPowerAccessEmails();
-// });
-cron.schedule('0 8 * * *', () => {
+cron.schedule('*/1 * * * *', () => {
   console.log('⏰ Menjalankan pengecekan akses listrik...');
   checkPowerAccessEmails();
 });
+// cron.schedule('0 8 * * *', () => {
+//   console.log('⏰ Menjalankan pengecekan akses listrik...');
+//   checkPowerAccessEmails();
+// })
 
 exports.getAllUsers = async (req, res) => {
   try {
