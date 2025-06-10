@@ -5,6 +5,7 @@ import {
   FormControlLabel, Checkbox, FormHelperText,
   Snackbar, Alert
 } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import axios from 'axios';
 
@@ -13,7 +14,7 @@ const monthOptions = [
   "Januari", "Februari", "Maret", "April", "Mei", "Juni",
   "Juli", "Agustus", "September", "Oktober", "November", "Desember"
 ];
-const RATE_PER_MONTH = 500_000;
+const RATE_PER_MONTH = 650_000;
 
 const ReportPayment = ({ onClose }) => {
   const [userId, setUserId] = useState(null);
@@ -132,21 +133,33 @@ const ReportPayment = ({ onClose }) => {
         </FormControl>
 
         <FormControl fullWidth margin="normal">
-          <InputLabel>Periode Pembayaran</InputLabel>
-          <Select
+          <Autocomplete
             multiple
-            label="Periode Pembayaran"
+            options={monthOptions}
             value={selectedMonths}
-            onChange={e => setSelectedMonths(e.target.value)}
-            renderValue={vals => vals.join(', ')}
-            sx={{ borderRadius: 5 }}
-          >
-            {monthOptions.map(m => (
-              <MenuItem key={m} value={m}>{m}</MenuItem>
-            ))}
-          </Select>
-          <FormHelperText>Pilih satu atau beberapa bulan</FormHelperText>
+            onChange={(e, newValue) => setSelectedMonths(newValue)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Periode Pembayaran"
+                placeholder="Pilih bulan"
+                margin="none"
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 5,
+                  }
+                }}
+              />
+            )}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: 5,
+              }
+            }}
+          />
+          <FormHelperText sx={{ fontSize: 10}}>Pilih satu atau beberapa bulan</FormHelperText>
         </FormControl>
+
 
         <TextField
           fullWidth
