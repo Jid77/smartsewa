@@ -11,7 +11,7 @@ function HomeContent({ onOpenLaporan, onOpenDataPenghuni, onOpenMonitoring, onOp
   return (
     <Box
       sx={{
-        height: 'calc(110vh - 230px)',
+        height: 'calc(110vh - 200px)',
         overflowY: 'auto', // ✅ biarkan scroll secara vertikal
         position: 'relative',
         zIndex: 1,
@@ -26,7 +26,7 @@ function HomeContent({ onOpenLaporan, onOpenDataPenghuni, onOpenMonitoring, onOp
           flexDirection: 'column',
           alignItems: 'center',
           gap: 1,
-          marginTop: '20px',
+          marginTop: '55px',
         }}
       >
         <Box

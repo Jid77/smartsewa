@@ -84,7 +84,7 @@ const UserHistoryContent = ({ userId }) => {
         display: 'flex',
         flexDirection: 'column',
         mx: 'auto',
-        mt: 5,
+        mt: 4.5,
       }}
     >
       <Typography

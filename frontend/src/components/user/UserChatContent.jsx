@@ -130,7 +130,7 @@ function UserChatContent({ onBack }) {
   let lastDate = null;
 
   return (
-    <Box sx={{ height: 'calc(100vh - 130px)', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: 'calc(100vh - 110px)', display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       <Box
         sx={{

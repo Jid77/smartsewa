@@ -87,6 +87,7 @@ const AdminHistoryContent = () => {
         display: 'flex',
         flexDirection: 'column',
         mx: 'auto',
+        pt: 2,
       }}
     >
       <Typography

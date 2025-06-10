@@ -104,9 +104,7 @@ function ProfileContent({ user, setUser, handleLogout }) {
     />
   </Box>
 
-  {/* Feedback Message */}
-  {errorMessage && <Alert severity="error" sx={{ mb: 2 }}>{errorMessage}</Alert>}
-  {successMessage && <Alert severity="success" sx={{ mb: 2 }}>{successMessage}</Alert>}
+
 
   {/* Scrollable Area */}
   <Box
@@ -259,12 +257,27 @@ function ProfileContent({ user, setUser, handleLogout }) {
   </Box>
 
     {/* Notifikasi */}
-    <Snackbar open={!!successMessage} autoHideDuration={2000} onClose={() => setSuccessMessage('')}>
-      <Alert severity="success" sx={{ borderRadius: 2 }}>{successMessage}</Alert>
-    </Snackbar>
-    <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={() => setErrorMessage('')}>
-      <Alert severity="error" sx={{ borderRadius: 2 }}>{errorMessage}</Alert>
-    </Snackbar>
+        <Snackbar
+          open={!!successMessage}
+          autoHideDuration={2000}
+          onClose={() => setSuccessMessage('')}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert severity="success" sx={{ borderRadius: 2 }} onClose={() => setSuccessMessage('')}>
+            {successMessage}
+          </Alert>
+        </Snackbar>
+
+        <Snackbar
+          open={!!errorMessage}
+          autoHideDuration={3000}
+          onClose={() => setErrorMessage('')}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert severity="error" sx={{ borderRadius: 2 }} onClose={() => setErrorMessage('')}>
+            {errorMessage}
+          </Alert>
+        </Snackbar>
   </Box>
 
       );

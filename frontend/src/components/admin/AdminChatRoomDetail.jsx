@@ -137,17 +137,18 @@ function AdminChatRoomDetail({ roomId, onBack }) {
   let lastDate = null;
 
   return (
-    <Box sx={{ height: 'calc(100vh - 130px)', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: 'calc(100vh - 140px)', display: 'flex', flexDirection: 'column' }}>
       <Box
         sx={{
           px: 2,
           py: 2,
-          pt: 5,
+          // pt: 5,
           borderBottom: '1px solid #eee',
           display: 'flex',
           alignItems: 'center',
           position: 'sticky',
           top: 0,
+          bottom: 0,
           zIndex: 10,
         }}
       >

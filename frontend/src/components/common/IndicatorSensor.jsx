@@ -48,7 +48,7 @@ function IndicatorSensor({ temperature, humidity, activeUntil, color = '#FFFFFF'
         sx={{
           justifyContent: 'center',
           width: '100%',
-          marginTop: '10px',
+          // marginTop: '5px',
         }}
       >
         <Grid item xs={6}>

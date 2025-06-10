@@ -92,10 +92,6 @@ function ProfileContent({ user, setUser, handleLogout }) {
             </Avatar>
           </Box>
 
-        {/* Feedback Message */}
-        {errorMessage && <Alert severity="error" sx={{ mb: 2 }}>{errorMessage}</Alert>}
-        {successMessage && <Alert severity="success" sx={{ mb: 2 }}>{successMessage}</Alert>}
-
           {/* Informasi Akun */}
           <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
             Nama
@@ -245,14 +241,29 @@ function ProfileContent({ user, setUser, handleLogout }) {
             </Button>
           </Box>
         </Box>
-      
-          {/* Notifikasi */}
-          <Snackbar open={!!successMessage} autoHideDuration={2000} onClose={() => setSuccessMessage('')}>
-            <Alert severity="success" sx={{ borderRadius: 2 }}>{successMessage}</Alert>
+          <Snackbar
+            open={!!successMessage}
+            autoHideDuration={2000}
+            onClose={() => setSuccessMessage('')}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert severity="success" sx={{ borderRadius: 2 }} onClose={() => setSuccessMessage('')}>
+              {successMessage}
+            </Alert>
           </Snackbar>
-          <Snackbar open={!!errorMessage} autoHideDuration={3000} onClose={() => setErrorMessage('')}>
-            <Alert severity="error" sx={{ borderRadius: 2 }}>{errorMessage}</Alert>
+
+          <Snackbar
+            open={!!errorMessage}
+            autoHideDuration={3000}
+            onClose={() => setErrorMessage('')}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert severity="error" sx={{ borderRadius: 2 }} onClose={() => setErrorMessage('')}>
+              {errorMessage}
+            </Alert>
           </Snackbar>
+
+
         </Box>
       
     );
