@@ -69,8 +69,11 @@ import {
         setSaving(true);
         await axios.put(`${API_URL}/api/users/${userId}`, { no_room: selectedRoom });
         await fetchUser(); 
+        setSnackbar({ open: true, message: 'Nomor kamar berhasil disimpan', severity: 'success' });
+        setTimeout(() => onBack?.(), 1000);
       } catch (err) {
-        console.error('Gagal update kamar:', err);
+        console.error('Gagal menyimpan nomor kamar:', err);
+        setSnackbar({ open: true, message: 'Gagal menghapus user', severity: 'error' });
       } finally {
         setSaving(false);
       }

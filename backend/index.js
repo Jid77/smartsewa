@@ -1,4 +1,3 @@
-// Paksa resolve IPv4 duluan
 const dns = require('dns');
 dns.setDefaultResultOrder('ipv4first');
 const express = require('express');
@@ -32,7 +31,7 @@ app.use(cors({
 app.use(express.json());
 
 // route
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Route API
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);

@@ -218,7 +218,15 @@ const ReportPayment = ({ onClose }) => {
           disabled={!jenisPembayaran || !selectedMonths.length || !buktiBayar || !confirmChecked || loading}
           fullWidth
           variant="contained"
-          sx={{ mt: 3, borderRadius: 5 }}
+            sx={{
+              mt: 3,
+              borderRadius: 5,
+              bgcolor: '#51B57D',
+              color: '#fff',
+              '&:hover': {
+                bgcolor: '#469E6C',
+              }
+            }}
         >
           {loading ? 'Mengirim...' : 'Kirim Laporan'}
         </Button>

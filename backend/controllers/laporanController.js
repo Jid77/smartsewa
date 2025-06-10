@@ -1,4 +1,7 @@
 const db = require('../models');
+const fs = require('fs');
+const path = require('path');
+const supabase = require('../config/supabaseClient');
 
 const saveHistory = async (activity, userId = null, laporanId = null) => {
   try {
@@ -12,15 +15,49 @@ exports.laporPembayaran = async (req, res) => {
   const { userId, jenisPembayaran, jumlah, periodePembayaran } = req.body;
 
   try {
+    
+    const file = req.file;
+    console.log("ISI req.body:", req.body);
+    console.log("ISI req.file:", req.file);
+    if (!file) {
+      return res.status(400).json({ error: 'File bukti bayar tidak ditemukan' });
+    }
+
+    // Baca buffer dari file sementara
+    const fileBuffer = fs.readFileSync(file.path);
+    const fileExt = path.extname(file.originalname);
+    const fileName = `bukti_${Date.now()}${fileExt}`;
+
+    // Upload Supabase Storage
+    const { data, error } = await supabase.storage
+      .from(process.env.SUPABASE_BUCKET) 
+      .upload(`photo/${fileName}`, fileBuffer, {
+        contentType: file.mimetype,
+        upsert: true,
+      });
+
+    if (error) {
+      console.error('Gagal upload ke Supabase:', error);
+      return res.status(500).json({ error: 'Gagal upload bukti bayar ke Supabase' });
+    }
+
+    const { data: publicUrlData } = supabase
+      .storage
+      .from(process.env.SUPABASE_BUCKET)
+      .getPublicUrl(`photo/${fileName}`);
+    const buktiBayarUrl = publicUrlData.publicUrl;
+    
+    fs.unlinkSync(file.path);
     const laporan = await db.LaporanPembayaran.create({
       userId,
       jenisPembayaran,
       jumlah,
       periodePembayaran,
       tanggalPembayaran: new Date(),
-      buktiBayarUrl: req.file.path,
-      status: 'pending'
+      buktiBayarUrl,
+      status: 'pending',
     });
+    
     await saveHistory('Laporan pembayaran telah dikirim', userId, laporan.id);
 
     res.json({ message: 'Lapor pembayaran berhasil!', data: laporan });

@@ -120,7 +120,7 @@ const AdminReportDetail = ({ reportId, onBack }) => {
           </Typography>
           <Box
             component="img"
-            src={`${API_URL}/${lapor.buktiBayarUrl.replace(/\\/g, '/')}`}
+            src={lapor.buktiBayarUrl}
             alt="Bukti Bayar"
             sx={{
               width: '100%',

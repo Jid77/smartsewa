@@ -1,4 +1,3 @@
-// src/components/admin/AdminUserPaymentHistoryDetail.jsx
 import React, { useEffect, useState } from 'react';
 import {
   Box,
@@ -86,7 +85,7 @@ const AdminUserPaymentHistoryDetail = ({ paymentId, onBack }) => {
           </Typography>
           <Box
             component="img"
-            src={`${API_URL}/${payment.buktiBayarUrl.replace(/\\/g, '/')}`}
+            src={payment.buktiBayarUrl}
             alt="Bukti Pembayaran"
             sx={{
               width: '100%',

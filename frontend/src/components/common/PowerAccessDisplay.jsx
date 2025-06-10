@@ -23,7 +23,7 @@ export default function PowerAccessDisplay({ activeUntil }) {
 
   const sisaHari = Math.floor(durasi / 1440); // 1 hari = 1440 menit
   const sisaJam = Math.floor((durasi % 1440) / 60);
-  const persen = ((sisaHari + sisaJam / 24) / maxHari) * 100;
+  const persen = Math.min(((sisaHari + sisaJam / 24) / maxHari) * 100, 100);
 
   return (
     <Box sx={{ position: 'relative', mt: 2, mb: 4 }}>
