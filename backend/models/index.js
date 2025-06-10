@@ -1,20 +1,28 @@
 const { Sequelize, DataTypes} = require('sequelize');
-const sequelize = new Sequelize(
-  process.env.DATABASE_URL || 'postgresql://postgres:@localhost:5432/smartsewa', 
-  {
-    dialect: 'postgres',
-    dialectModule: require('pg'),
-    ...(process.env.NODE_ENV === 'production' && {
-      dialectOptions: {
-        ssl: {
-          require: true,
-          rejectUnauthorized: false
-        }
+const parse = require('pg-connection-string').parse;
+
+const isProduction = process.env.NODE_ENV === 'production';
+const rawUrl = process.env.DATABASE_URL || 'postgresql://postgres:@localhost:5432/smartsewa';
+const config = parse(rawUrl);
+
+const sequelize = new Sequelize({
+  username: config.user,
+  password: config.password,
+  database: config.database,
+  host: config.host,
+  port: config.port,
+  dialect: 'postgres',
+  dialectModule: require('pg'),
+  logging: false,
+  ...(isProduction && {
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
       }
-    }),
-    logging: false,
-  }
-);
+    }
+  })
+});
 
 const db = {};
 db.Sequelize = Sequelize;
