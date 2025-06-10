@@ -79,7 +79,7 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-
+  const isProduction = process.env.NODE_ENV === 'production';
   try {
     const user = await db.User.findOne({ where: { email } });
     if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -97,8 +97,8 @@ exports.login = async (req, res) => {
 
     res.cookie('token', jwt.create(token), {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // ubah ke true di production (pakai HTTPS)
-      sameSite: 'none',
+      secure: isProduction,                      // true jika production
+      sameSite: isProduction ? 'none' : 'lax',   // none jika production, lax untuk dev
       maxAge: 24 * 60 * 60 * 1000, // 1 hari
     });
 

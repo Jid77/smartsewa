@@ -39,7 +39,8 @@ exports.sendMessage = async (req, res) => {
 exports.getAllChatRooms = async (req, res) => {
   try {
     const currentUser = jwt.verify(req.cookies?.token);
-    
+    console.log('Token dari cookie:', req.cookies?.token);
+
     if (!currentUser || currentUser.role !== 'admin') {
       return res.status(401).json({ error: 'Unauthorized' });
     }

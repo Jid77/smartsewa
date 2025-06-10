@@ -170,6 +170,7 @@ exports.updateProfile = async (req, res) => {
   try {
     // console.log('Session:', req.session.user);  // 🔍 Debug session
     console.log('Body:', req.body);             // 🔍 Debug body dari frontend
+    const isProduction = process.env.NODE_ENV === 'production';
 
     const currentUser = jwt.verify(req.cookies?.token);
     if (!currentUser) {
@@ -213,8 +214,8 @@ exports.updateProfile = async (req, res) => {
     // Update juga session user
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // ubah ke true di production (pakai HTTPS)
-      sameSite: 'none',
+      secure: isProduction,                      // true jika production
+      sameSite: isProduction ? 'none' : 'lax',   // none jika production, lax untuk dev
       maxAge: 24 * 60 * 60 * 1000, // 1 hari
     });
 
