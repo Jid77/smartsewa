@@ -6,7 +6,7 @@ import BoltIcon from '@mui/icons-material/Bolt';
 import dayjs from 'dayjs';
 import DynamicBoltIcon from './DynamicBoltIcon'; 
 
-function IndicatorSensor({ temperature, humidity, activeUntil, color = '#FFFFFF', minTemp = 20, maxTemp = 30, minHum = 30, maxHum = 75 }) {
+function IndicatorSensor({ temperature, humidity, activeUntil, color = '#FFFFFF', minTemp = 18, maxTemp = 30, minHum = 30, maxHum = 75 }) {
   const displayTemperature = temperature !== null ? `${temperature}°C` : 'N/A';
   const displayHumidity = humidity !== null ? `${humidity}%` : 'N/A';
 
@@ -14,7 +14,8 @@ function IndicatorSensor({ temperature, humidity, activeUntil, color = '#FFFFFF'
   const isHumidityOfRange = humidity !== null && (humidity < minHum || temperature > maxHum);
 
   const backgroundColor = isTemperatureOutOfRange ? '#FF495C' : '#5EC38B'; 
-  
+  const backgroundColor2 = isHumidityOfRange ? '#FF495C' : '#5EC38B'; 
+
   const maxHari = 30;
   let sisaHari = 0;
   let sisaJam = 0;
@@ -132,7 +133,7 @@ function IndicatorSensor({ temperature, humidity, activeUntil, color = '#FFFFFF'
                   flexDirection: 'column',
                   padding: '16px',
                   marginLeft: '26px',
-                  background: backgroundColor,
+                  background: backgroundColor2,
                   borderRadius: '30px',
                   height: '55px',
                   width: '55px',

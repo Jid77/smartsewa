@@ -32,7 +32,7 @@ exports.receiveSensorData = async (req, res) => {
       const kamar = String(item.kamar); 
       const { suhu, kelembapan, suara } = item;
 
-      const isSuhuAbnormal = suhu < 18 || suhu > 35;
+      const isSuhuAbnormal = suhu < 18 || suhu > 30;
       const isKelembapanAbnormal = kelembapan < 30 || kelembapan > 75;
       const isSuaraAbnormal = suara > 2000;
       const isAbnormal = isSuhuAbnormal || isKelembapanAbnormal || isSuaraAbnormal;
