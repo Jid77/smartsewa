@@ -56,26 +56,24 @@ export default function MonitoringSensor({ onBack }) {
   return (
     <Box
       sx={{
+        width: '100%',
         maxWidth: 414,
         mx: 'auto',
-        height: '100vh',
+        height: 'calc(100vh - 120px)',
         display: 'flex',
-        flexDirection: 'column',
         overflow: 'hidden',
+        flexDirection: 'column',
       }}
     >
       {/* Sticky Header with Back Button */}
       <Box
         sx={{
+          px: 2,
+          pt: 2,
+          pb: 1,
+          borderBottom: '1px solid #eee',
           display: 'flex',
           alignItems: 'center',
-          mb: 2,
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-          borderBottom: '1px solid #eee',
-          py: 1,
-          px: 2,
         }}
       >
         <IconButton onClick={onBack} size="small">
@@ -89,15 +87,19 @@ export default function MonitoringSensor({ onBack }) {
       {/* Konten Scrollable */}
       <Box
         sx={{
-          flexGrow: 1,
+          flex: 1,
           overflowY: 'auto',
           px: 2,
-          pb: 4,
+          pb: 20,
           pt: 3,
-          paddingBottom: '80%',
-          '&::-webkit-scrollbar': {
-            width: '6px',
-          },
+          '&::-webkit-scrollbar': { width: '6px' },
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: '#888',
+              borderRadius: '10px',
+              '&:hover': { background: '#555' },
+            },
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#888 transparent',
         }}
       >
         <Container maxWidth="sm" sx={{ px: 0 }}>

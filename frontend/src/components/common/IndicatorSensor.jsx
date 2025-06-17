@@ -25,7 +25,7 @@ function IndicatorSensor({ temperature, humidity, activeUntil, color = '#FFFFFF'
     const now = dayjs();
     const until = dayjs(activeUntil);
     const durasi = until.diff(now, 'minute');
-    sisaHari = Math.floor(durasi / 1440); // 1 hari = 1440 menit
+    sisaHari = Math.floor(durasi / 1440); 
     sisaJam = Math.floor((durasi % 1440) / 60);
     level = Math.max(0, Math.min(1, (sisaHari + sisaJam / 24) / maxHari));
 
@@ -34,10 +34,10 @@ function IndicatorSensor({ temperature, humidity, activeUntil, color = '#FFFFFF'
     <Box
       sx={{
         width: '100%',
-        maxWidth: 347,
+        maxWidth: 350,
         marginLeft: '35px',
         //marginRight: 'auto',
-        marginTop: '100px',
+        marginTop: '80px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

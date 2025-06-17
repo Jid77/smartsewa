@@ -212,7 +212,7 @@ exports.updateProfile = async (req, res) => {
     }
 
     // Update juga session user
-    res.cookie('token', token, {
+    res.cookie('token', jwt.create(token), {
       httpOnly: true,
       secure: isProduction,                      // true jika production
       sameSite: isProduction ? 'none' : 'lax',   // none jika production, lax untuk dev

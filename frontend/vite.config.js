@@ -14,5 +14,9 @@ export default defineConfig({
         global: 'globalThis'
       }
     }
+  },
+   server: {
+    host: '0.0.0.0',
+    allowedHosts: 'all'
   }
 });

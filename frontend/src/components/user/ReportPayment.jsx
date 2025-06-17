@@ -76,23 +76,25 @@ const ReportPayment = ({ onClose }) => {
 
   return (
     <Box
-      maxWidth={414}
-      mx="auto"
-      height="100vh"
-      display="flex"
-      flexDirection="column"
-      // overflow="hidden"
+      sx={{
+        width: '100%',
+        maxWidth: 414,
+        height: 'calc(100vh - 120px)', // Sesuaikan sesuai tinggi greeting + bottom nav di global layout kamu
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        mx: 'auto',
+        mt: 4.5,
+      }}
     >
-      {/* Sticky Header */}
+      {/* Header statis */}
       <Box
         sx={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
           px: 2,
-          pt: 6,
+          pt: 2,
           pb: 1,
           borderBottom: '1px solid #eee',
+          backgroundColor: 'transparent',
           display: 'flex',
           alignItems: 'center',
         }}
@@ -105,16 +107,23 @@ const ReportPayment = ({ onClose }) => {
         </Typography>
       </Box>
 
-      {/* Scrollable Content */}
+      {/* Form scrollable */}
       <Box
         component="form"
         onSubmit={handleSubmit}
         sx={{
           flex: 1,
           overflowY: 'auto',
-          px: 3,
-          py: 2,
-          paddingBottom: '50%',
+          px: 2,
+          pb: '80px',
+          '&::-webkit-scrollbar': { width: '6px' },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#888',
+            borderRadius: '10px',
+            '&:hover': { background: '#555' },
+          },
+          scrollbarWidth: 'thin',
+          scrollbarColor: '#888 transparent',
         }}
       >
         <FormControl fullWidth margin="normal">
@@ -159,7 +168,6 @@ const ReportPayment = ({ onClose }) => {
           />
           <FormHelperText sx={{ fontSize: 10}}>Pilih satu atau beberapa bulan</FormHelperText>
         </FormControl>
-
 
         <TextField
           fullWidth
@@ -207,6 +215,12 @@ const ReportPayment = ({ onClose }) => {
             <Checkbox
               checked={confirmChecked}
               onChange={e => setConfirmChecked(e.target.checked)}
+                sx={{
+                  color: '#5EC38B',
+                  '&.Mui-checked': {
+                    color: '#5EC38B'
+                  }
+                }}
             />
           }
           label="Saya yakin data yang saya masukkan sudah benar"
@@ -218,10 +232,14 @@ const ReportPayment = ({ onClose }) => {
           disabled={!jenisPembayaran || !selectedMonths.length || !buktiBayar || !confirmChecked || loading}
           fullWidth
           variant="contained"
-          sx={{ mt: 3, borderRadius: 5 }}
+          sx={{ mt: 3, borderRadius: 5,backgroundColor: '#5EC38B',
+        '&:hover': {
+          backgroundColor: '#4CA977'  
+        } }}
         >
           {loading ? 'Mengirim...' : 'Kirim Laporan'}
         </Button>
+
       </Box>
 
       {/* Snackbar Feedback */}
