@@ -16,6 +16,7 @@ const upload = multer({ storage });
 
 router.post('/lapor-pembayaran', upload.single('buktiBayar'), laporanController.laporPembayaran);
 router.get('/laporan-pembayaran', laporanController.getAllLaporan);
+router.get('/laporan-pembayaran/pendapatan', laporanController.getPendapatanBulanan);
 router.get('/laporan-pembayaran/:id', laporanController.getLaporanById);
 router.post('/konfirmasi-laporan/:id', laporanController.konfirmasiLaporan);
 

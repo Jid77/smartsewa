@@ -14,13 +14,15 @@ import {
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import axios from 'axios';
 
-const AdminReportPayment = ({ onSelectReport, onBack }) => {
+const AdminReportPayment = ({ onSelectReport, onBack, onViewIncomeDetail }) => {
   const [laporan, setLaporan] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [summary, setSummary] = useState(null);
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchLaporan();
+    fetchPendapatan();
   }, []);
 
   const fetchLaporan = async () => {
@@ -34,6 +36,17 @@ const AdminReportPayment = ({ onSelectReport, onBack }) => {
     }
   };
 
+  const fetchPendapatan = async () => {
+    try {
+      const today = new Date();
+      const bulan = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+      const res = await axios.get(`${API_URL}/api/laporan-pembayaran/pendapatan?bulan=${bulan}`);
+      setSummary(res.data);
+    } catch (err) {
+      console.error('Gagal ambil pendapatan:', err);
+    }
+  };
+  
   return (
     <Box
       sx={{
@@ -66,6 +79,54 @@ const AdminReportPayment = ({ onSelectReport, onBack }) => {
           Laporan Pembayaran
         </Typography>
       </Box>
+
+{summary && (
+  <Box
+    sx={{
+      pt: 1,
+      pb: 2,
+      borderBottom: '1px solid #eee',
+      mx: '30px', 
+    }}
+  >
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+        <Box>
+          <Typography variant="body2" fontWeight="bold" color="text.secondary">
+            Total Pendapatan Bulan {new Date(summary.bulan + '-01').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
+          </Typography>
+          <Typography variant="h6" color="success.main" fontWeight="bold">
+            Rp {summary.totalPendapatan.toLocaleString('id-ID')}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {summary.jumlahTransaksi} transaksi dikonfirmasi
+          </Typography>
+        </Box>
+          <Box>
+            <button
+              style={{
+                backgroundColor: '#5EC38B',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '6px 12px',
+                cursor: 'pointer',
+                fontSize: '12px',
+              }}
+              onClick={onViewIncomeDetail}
+            >
+              Lihat Detail
+            </button>
+          </Box>
+        </Box>
+      </Box>
+    )}
+
 
       {/* Scrollable List */}
       {loading ? (

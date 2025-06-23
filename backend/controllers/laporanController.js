@@ -1,4 +1,5 @@
 const db = require('../models');
+const { Op } = require('sequelize');
 
 const saveHistory = async (activity, userId = null, laporanId = null) => {
   try {
@@ -108,5 +109,56 @@ exports.konfirmasiLaporan = async (req, res) => {
   } catch (err) {
     console.error('Gagal update laporan:', err);
     res.status(500).json({ error: 'Gagal update laporan' });
+  }
+};
+
+exports.getPendapatanBulanan = async (req, res) => {
+  try {
+    const { bulan } = req.query; // Format: "2025-06"
+    if (!bulan) return res.status(400).json({ error: 'Parameter bulan wajib diisi' });
+
+    const startDate = new Date(`${bulan}-01T00:00:00Z`);
+    const endDate = new Date(startDate);
+    endDate.setMonth(endDate.getMonth() + 1);
+
+    const laporan = await db.LaporanPembayaran.findAll({
+      where: {
+        status: 'confirmed',
+        tanggalPembayaran: {
+          [Op.gte]: startDate,
+          [Op.lt]: endDate,
+        },
+      },
+      include: {
+        model: db.User,
+        attributes: ['id', 'username', 'email', 'no_room']
+      },
+      order: [['tanggalPembayaran', 'ASC']]
+    });
+
+    const total = laporan.reduce((sum, lapor) => sum + Number(lapor.jumlah), 0);
+
+    res.json({
+      bulan,
+      totalPendapatan: total,
+      jumlahTransaksi: laporan.length,
+      rincian: laporan
+        .filter(l => l.User)
+        .map(l => ({
+        id: l.id,
+        jumlah: l.jumlah,
+        periode: l.periodePembayaran,
+        tanggal: l.tanggalPembayaran,
+        user: {
+          id: l.User.id,
+          username: l.User.username,
+          email: l.User.email,
+          no_room: l.User.no_room
+        }
+      }))
+    });
+  } catch (err) {
+    console.error('Gagal ambil pendapatan bulanan:', err);
+    res.status(500).json({ error: 'Gagal mengambil data pendapatan' });
   }
 };

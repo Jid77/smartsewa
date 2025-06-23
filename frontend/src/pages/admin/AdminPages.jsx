@@ -20,6 +20,7 @@ import AdminUserPaymentHistory from '../../components/admin/AdminUserPaymentHist
 import AdminUserPaymentHistoryDetail from '../../components/admin/AdminUserPaymentHistoryDetail';
 import AdminChatRoomList from '../../components/admin/AdminChatRoomList';
 import AdminChatRoomDetail from '../../components/admin/AdminChatRoomDetail';
+import AdminIncomeDetail from '../../components/admin/AdminIncomeDetail';
 import HistoryIcon from '@mui/icons-material/History';
 import bgTop from '../../assets/Cloud.png';
 import bgBottom from '../../assets/Cloud3.png';
@@ -63,6 +64,7 @@ function AdminPages({ user, setUser }) {
             setSelectedReportId(id);
             setActivePage('laporanDetail');
           }}
+          onViewIncomeDetail={() => setActivePage('incomeDetail')}
         />
       );
     }
@@ -147,6 +149,15 @@ function AdminPages({ user, setUser }) {
         />
       );
     }
+    
+    if (activePage === 'incomeDetail') {
+      return (
+        <AdminIncomeDetail
+          onBack={() => setActivePage('laporanList')}
+        />
+      );
+    }
+
 
 
     if (tab === 0) {
